@@ -1,4 +1,4 @@
-FROM alpine
+FROM node-4
 
 #RUN apt-get install curl
 RUN apk add --no-cache curl
