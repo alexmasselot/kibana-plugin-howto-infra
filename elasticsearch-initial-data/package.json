@@ -1,0 +1,19 @@
+{
+  "name": "elasticsearch-initial-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "entrypoint.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "alexandre.masselot@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "elasticdump": "^2.3.0",
+    "elasticsearch": "^11.0.1",
+    "lodash": "^4.13.1",
+    "node-datetime": "^1.0.0",
+    "promise": "^7.1.1",
+    "twitter": "^1.3.0"
+  }
+}

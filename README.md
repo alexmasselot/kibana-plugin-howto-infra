@@ -50,10 +50,30 @@ Head to https://www.elastic.co/downloads/kibana and download the latest 4.x kiba
 	bin/kibana --dev --elasticsearch=http://$(docker-machine ip default):9200
 
 
+##Setting initial data
+
+It's the most comfortable to warm up the system with data. For development or testing, this is an important step.
+
+### Preparing data
+
+It's a chicken and egg problem.
+We must have a Kibana dashboard with searches & visualizations ready. The export them in dump. Finally, when booting up those dumps must be reimported.
+
+#### Exporting
+##### tweets (data)
+
+##### kibana
+everything with kibana-howto in the id + index default
+
+#### Importing
+in the Cokerfile
+
+### Uploading them (if needed)
+
 # Further readings
 
  * http://logz.io/blog/kibana-visualizations/
  * https://www.elastic.co/elasticon/2015/sf/contributors-guide-to-the-kibana-galaxy
- * http://clb.demon.fi/files/RectangleBinPack.pdf
+ * http://clb.demon.fi/files/RectangleBinPack.pdf 
  
 	

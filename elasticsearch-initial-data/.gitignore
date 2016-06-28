@@ -1,2 +1,4 @@
 .idea
 *.iml
+dump/secret-env.sh
+node_modules/*

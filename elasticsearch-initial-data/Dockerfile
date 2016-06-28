@@ -1,12 +1,11 @@
-FROM node-4
+FROM node:4
 
-#RUN apt-get install curl
-RUN apk add --no-cache curl
-RUN apk add --no-cache bash
-RUN apk add --no-cache jq
-
-COPY ./entrypoint.sh /
-COPY ./data /data
+#RUN apt-get install cu
 
 
-ENTRYPOINT ["bash", "/entrypoint.sh"]
+COPY . /usr/src
+WORKDIR /usr/src
+RUN npm install
+
+#ENTRYPOINT ["bash", "/entrypoint.sh"]
+ENTRYPOINT ["node", "entrypoint.js"]
