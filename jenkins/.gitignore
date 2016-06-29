@@ -1,12 +1,2 @@
-# Created by .ignore support plugin (hsz.mobi)
 .idea
-mounted/jenkins
 *.iml
-data/jenkins-home/jobs/*/builds
-data/jenkins-home/jobs/*/last*
-data/jenkins-home/jobs/*/next*
-data/jenkins-home/jobs/*/workspace
-data/jenkins-home/.*
-data/jenkins-home/logs/*
-data/jenkins-home/users/*
-data/jenkins-home/plugins/*
