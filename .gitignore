@@ -1,3 +1,10 @@
-/docker-data/volumes/jenkins
+/docker-data/volumes/jenkins/jobs/*/builds
+/docker-data/volumes/jenkins/jobs/*/last*
+/docker-data/volumes/jenkins/jobs/*/next*
+/docker-data/volumes/jenkins/jobs/*/workspace
+/docker-data/volumes/jenkins/.*
+/docker-data/volumes/jenkins/logs/*
+/docker-data/volumes/jenkins/users/*
+/docker-data/volumes/jenkins/plugins/*
 .DS_Store
 */node_modules

@@ -15,6 +15,17 @@ Once docker is installed on your machine, a docker machine ready (hereby named `
 	
 ### What have you just done???
 
+You have deployed an elaticsearch server, a kibana and a jenkins server for continuous deployment.
+Demo data is populated into the elastic search and kibana is setup with visualization and a default dashboard.
+
+If `my_docker_ip?` is your current docker IP address, you can head to:
+
+ * http://my_docker_ip:5601 for a Kibana
+ * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
+ * http://my_docker_ip:9200 for ElasticSearch server
+ 
+Aloow for a few minutes for the data to warm up and the puligin to be deployed (check Jenkins for deployement completion - blue lights -, and Kibana to visualize).
+
 
 ## Developping
 
@@ -41,11 +52,15 @@ The idea is to download kibana and launch it with a reference to the docker depl
 Head to https://www.elastic.co/downloads/kibana and download the latest 4.x kibana, untar it in your developement directory
 
     cd kibana-4.5.1-darwin-x64  # or your ownn kibana directory
+	
+	#fork or clone the plugin directory so they will be reloaded on the local kibana at every file save
 	cd installedPlugins/
 	git clone https://github.com/alexmasselot/kibana-howto-plugin-clock.git
-	git clone https://github.com/alexmasselot/kibana-howto-plugin-format-degree.git
+	git clone https://github.com/alexmasselot/kibana-howto-plugin-format-tweet-text.git
+	git clone https://github.com/alexmasselot/kibana-howto-plugin-viz-data-country.git
+
+	#start the local kibana in development mode with nodejs 4.4
 	cd ..
-	
 	nvm use 4.4
 	bin/kibana --dev --elasticsearch=http://$(docker-machine ip default):9200
 

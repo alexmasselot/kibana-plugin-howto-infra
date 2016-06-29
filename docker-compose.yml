@@ -42,6 +42,6 @@ services:
     build: jenkins/
     dns: 8.8.8.8
     volumes:
-      - ./docker-data/volumes/jenkins:/var/jenkins_home
+      - ./jenkins/data/jenkins_home:/var/jenkins_home
     ports:
       - "8080:8080"

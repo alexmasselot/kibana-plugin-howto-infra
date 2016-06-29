@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor plugin="publish-over-ssh@1.14">
+  <hostConfigurations>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>kibana</name>
+      <hostname>kibana</hostname>
+      <username>kibana</username>
+      <secretPassword>0SYI3owU/IoSepj0+RT4+Q==</secretPassword>
+      <remoteRootDir></remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration">
+        <secretPassphrase>0SYI3owU/IoSepj0+RT4+Q==</secretPassphrase>
+        <key></key>
+        <keyPath>.ssh/id_rsa</keyPath>
+        <disableAllExec>false</disableAllExec>
+      </commonConfig>
+      <timeout>300000</timeout>
+      <overrideKey>false</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>0SYI3owU/IoSepj0+RT4+Q==</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+      <proxyType></proxyType>
+      <proxyHost></proxyHost>
+      <proxyPort>0</proxyPort>
+      <proxyUser></proxyUser>
+      <proxyPassword></proxyPassword>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+  </hostConfigurations>
+  <commonConfig reference="../hostConfigurations/jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+  <defaults class="jenkins.plugins.publish_over_ssh.options.SshPluginDefaults"/>
+</jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor>
