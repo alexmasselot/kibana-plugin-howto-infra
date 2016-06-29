@@ -17,7 +17,7 @@ services:
   elasticsearch-initial-data:
     build: elasticsearch-initial-data/
     links:
-      - elasticsearch
+      - kibana
   kibana:
     build: kibana/
     volumes:

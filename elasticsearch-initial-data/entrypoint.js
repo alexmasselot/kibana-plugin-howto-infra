@@ -5,7 +5,7 @@ var elasticdump = require('elasticdump');
 var _ = require('lodash');
 var Promise = require('promise');
 
-var esHost = '192.168.99.100'
+var esHost = 'elasticsearch'; //'192.168.99.100'
 var tweetIndex = 'tweets';
 var tweetType = 'example_1_X';
 var tweetFile = 'data/tweets.jsonl';
@@ -93,7 +93,8 @@ var esSetDefault = function () {
         var ids = _.map(response.hits.hits, '_id');
         return ids;
     }).then(function (ids) {
-        return Promise.all(_.map(ids, function(id){
+        console.log('.kibana/config ids', ids);
+        return Promise.all(_.map(ids, function (id) {
             return client.update({
                 index: '.kibana',
                 type: 'config',
@@ -121,14 +122,18 @@ var pESReady = new Promise(function (fullfill, reject) {
             reject('waited ElasticSearch cluster to come up too long');
             return;
         }
-        client.info(function (error) {
-            if (error) {
+        client.search({
+                index: '.kibana',
+                type: 'config'
+            })
+            .then(function () {
+                clearInterval(interv);
+                fullfill();
+            })
+            .catch(function () {
                 console.log('waiting for ElasticSearch cluster...');
-                return;
-            }
-            clearInterval(interv);
-            fullfill();
-        });
+            })
+
     }, 3000);
 });
 
