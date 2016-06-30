@@ -8,8 +8,9 @@ an infra + dev setup + examples
 
 Once docker is installed on your machine, a docker machine ready (hereby named `default`), let's start the container set:
 
-    export DOCKER_MACHINE=default
-	eval $(docker-machine env $DOCKER_MACHINE)
+    export DOCKER_MACHINE_NAME=kibanahowto
+	docker-machine create --driver=virtualbox --virtualbox-memory 4096MB --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver true $DOCKER_MACHINE_NAME
+	eval $(docker-machine env $DOCKER_MACHINE_NAME)
 	docker-compose build
 	docker-compose up
 	
@@ -18,7 +19,7 @@ Once docker is installed on your machine, a docker machine ready (hereby named `
 You have deployed an elaticsearch server, a kibana and a jenkins server for continuous deployment.
 Demo data is populated into the elastic search and kibana is setup with visualization and a default dashboard.
 
-If `my_docker_ip?` is your current docker IP address, you can head to:
+If `my_docker_ip?` is your current docker IP address (`docker-machine ip $DOCKER_MACHINE_NAME`), you can head to:
 
  * http://my_docker_ip:5601 for a Kibana
  * http://my_docker_ip:8080 for Jenkins continuous integration & deployment

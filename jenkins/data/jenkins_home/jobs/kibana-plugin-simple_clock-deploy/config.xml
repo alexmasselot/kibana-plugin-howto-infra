@@ -38,6 +38,7 @@
   <builders>
     <hudson.tasks.Shell>
       <command>npm install
+npm rebuild
 
 rm -f build/*
 npm run build</command>
