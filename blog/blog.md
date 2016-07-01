@@ -18,5 +18,22 @@ Documentation lacks, resources are valuable but scarce.
 But the promise is still shiny and we want to reach it.
 
 In this post, we propose to share our journey into the writing of Kibana plugins, the setup of continuous deployment into a Docker environment.
+There is no dramatic discovery or stunning breakthrough here, but simply a list of pitfalls we had to overcome during our quest.
 
 -----------------
+
+## What did we want to achieve?
+The goals was to meet the Kibana 4.3+, and to be able to customize the platform without forking the orignal code branch.
+
+Our definition of done was:
+
+ * we should develop different plugin types: independant widget, formatters, aggregation visualization. Hints: at this stage, they don't need to be pretty or particularly meaningful;
+ * they should be resizable and offer the classic comfort of other; 
+ * we should be able to build and deploy them via Jenkins or such;
+ * we want to use Docker to run Jenkins, ElasticSearch, a deployed Kibana;
+ * with Docker, we want the infrastructure to start with preloaded data and visualization, to let user driven or automated test to happen;
+ * we want the plugin development itself to be as smooth as possible (reload time when source code has changed);
+ * we want other to be able to reproduce.
+ * we want to be able to give a feedback on which extent the technology is mature for a full blown project.
+ 
+ 
