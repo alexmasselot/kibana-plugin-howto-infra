@@ -44,10 +44,14 @@ b) the default date historgram to allow for time range narrowing;
 c) an aggregation visualization;
 d) a search results with a custom formatter.
  
- ### Wasn't there any track map?
- If there had been one, this whole effort would be a simple tweet *"amzon tutorial on how to build and deploy #kibana plugins #elasticsearch http://wonder.land/kibana/plugin."*
- Obviously, there was not.
+ ### Wasn't there any full track map?
+ If there had been one, this whole effort would have been a straight tweet: *"amazing tutorial on how to build and deploy #kibana plugins #elasticsearch http://wonder.land/kibana/plugin."*
+ Obviously, there was none.
  
- However, there were instructive and enligthening source of infomrations, of complete.
- Although there might have been incomplete, slightly out of date or simply at a too high level, we cannot thank their authors enough to have put us on track.
+ However, there were instructive and inspiring sources of information.
+ Although there might have been incomplete, slightly out of date or simply at a too high level, we cannot thank their authors enough for having put us on track.
+ 
+  * Enlightening talks from the ElastiCon conferences in San Francisco, [2015](https://www.elastic.co/elasticon/2015/sf/contributors-guide-to-the-kibana-galaxy) and [2016](https://www.elastic.co/elasticon/conf/2016/sf/how-to-build-your-own-kibana-plugins). Way more blasting presentations are available there!
+  * The most comprehensive piece of documentation at the time and ubiquituously cited, [a four parts post by Tim Roe](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/). Although pretty descriptive, some information was missing, the commited code not fully working straightforwards (Kibana version?).
+  
  	
