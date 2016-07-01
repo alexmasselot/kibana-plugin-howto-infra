@@ -5,7 +5,7 @@ Kibana definiteley brought a strong component for interative searching and visua
 
 Customizable dashboard via a rich library of graphical components made its success, but soon, the need for customization arose.
 If plugins were thought to be integrated from early on, the actual customisation often lied into forking the master project and adapting to on particular purpose [REFREF daunting].
-Merging back fixes was soon to be a daunting effort to keep up with the high pace of the master branch evolutions.
+Merging back fixes was soon to be a daunting effort to keep up with the high pace of the [github evolution](https://github.com/elastic/kibana/graphs/contributors).
 
 Fortunately, as of version 4.3, the Kibana project took a more structured way to integrate custom plugins.
 The promise of maintainable pluggable plugins was becoming true.
