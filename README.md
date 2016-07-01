@@ -8,8 +8,11 @@ an infra + dev setup + examples
 
 Once docker is installed on your machine, a docker machine ready (hereby named `default`), let's start the container set:
 
+	git clone https://github.com/alexmasselot/kibana-plugin-howto-infra.git
+	cd kibana-plugin-howto-infra
+
     export DOCKER_MACHINE_NAME=kibanahowto
-	docker-machine create --driver=virtualbox --virtualbox-memory 4096MB --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver true $DOCKER_MACHINE_NAME
+	docker-machine create --driver=virtualbox --virtualbox-memory 4096 --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver $DOCKER_MACHINE_NAME
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
 	docker-compose build
 	docker-compose up
@@ -21,11 +24,13 @@ Demo data is populated into the elastic search and kibana is setup with visualiz
 
 If `my_docker_ip?` is your current docker IP address (`docker-machine ip $DOCKER_MACHINE_NAME`), you can head to:
 
- * http://my_docker_ip:5601 for a Kibana
+ * http://my_docker_ip:5601 for a Kibana, or (http://my_docker_ip_:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z')))
  * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
  * http://my_docker_ip:9200 for ElasticSearch server
  
-Aloow for a few minutes for the data to warm up and the puligin to be deployed (check Jenkins for deployement completion - blue lights -, and Kibana to visualize).
+Allow for a couple minutes for the data to warm up, you ready to go.
+
+*NB:* heading to Kibana, the index by default might not have been selected. If the page 
 
 
 ## Developping

@@ -14,6 +14,7 @@ jenkins/data/jenkins_home/updates
 jenkins/data/jenkins_home/secrets
 jenkins/data/jenkins_home/init.groovy.d
 jenkins/data/jenkins_home/userContent
+jenkins/data/jenkins_home/queue.xml*
 jenkins/data/jenkins_home/*key*
 jenkins/data/jenkins_home/*.log
 jenkins/data/jenkins_home/*.bak
