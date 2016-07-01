@@ -22,10 +22,10 @@ There is no dramatic discovery or stunning breakthrough here, but simply a list 
 
 -----------------
 
-## What did we want to achieve?
-The goals was to meet the Kibana 4.3+, and to be able to customize the platform without forking the orignal code branch.
+## The purpose of the quest
+The goals was to meet the Kibana 4.3+ promise, and to be able to customize the platform without forking the orignal code branch.
 
-Our **Definition of Done** was:
+Our *Definition of Done* was:
 
  * we should develop different plugin types: independant widget, formatters, aggregation visualization. Hints: at this stage, they don't need to be pretty or particularly meaningful;
  * they should be resizable and offer the classic comfort of the classic Kibana experience; 
@@ -36,4 +36,18 @@ Our **Definition of Done** was:
  * we want other to be able to reproduce.
  * we want to be able to give a feedback on which extent the technology is mature for a full blown project.
  
+![deployed plugins](images/dashboard-overall.png)
+
+*Figure 1:* the deployed dashboard with custom plugins, from upper left to lower right:
+a) a simple clock;
+b) the default date historgram to allow for time range narrowing;
+c) an aggregation visualization;
+d) a search results with a custom formatter.
  
+ ### Wasn't there any track map?
+ If there had been one, this whole effort would be a simple tweet *"amzon tutorial on how to build and deploy #kibana plugins #elasticsearch http://wonder.land/kibana/plugin."*
+ Obviously, there was not.
+ 
+ However, there were instructive and enligthening source of infomrations, of complete.
+ Although there might have been incomplete, slightly out of date or simply at a too high level, we cannot thank their authors enough to have put us on track.
+ 	
