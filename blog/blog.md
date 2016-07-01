@@ -25,10 +25,10 @@ There is no dramatic discovery or stunning breakthrough here, but simply a list 
 ## What did we want to achieve?
 The goals was to meet the Kibana 4.3+, and to be able to customize the platform without forking the orignal code branch.
 
-Our definition of done was:
+Our **Definition of Done** was:
 
  * we should develop different plugin types: independant widget, formatters, aggregation visualization. Hints: at this stage, they don't need to be pretty or particularly meaningful;
- * they should be resizable and offer the classic comfort of other; 
+ * they should be resizable and offer the classic comfort of the classic Kibana experience; 
  * we should be able to build and deploy them via Jenkins or such;
  * we want to use Docker to run Jenkins, ElasticSearch, a deployed Kibana;
  * with Docker, we want the infrastructure to start with preloaded data and visualization, to let user driven or automated test to happen;
