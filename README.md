@@ -90,6 +90,8 @@ in the Cokerfile
 
  * http://logz.io/blog/kibana-visualizations/
  * https://www.elastic.co/elasticon/2015/sf/contributors-guide-to-the-kibana-galaxy
+ * https://www.elastic.co/elasticon/conf/2016/sf/how-to-build-your-own-kibana-plugins
  * http://clb.demon.fi/files/RectangleBinPack.pdf 
+ * http://perfspy.blogspot.ch/2014/11/custom-kibana.html
  
 	

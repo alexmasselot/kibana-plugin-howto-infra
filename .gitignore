@@ -2,7 +2,7 @@ jenkins/data/jenkins_home/jobs/*/builds
 jenkins/data/jenkins_home/jobs/*/last*
 jenkins/data/jenkins_home/jobs/*/next*
 jenkins/data/jenkins_home/jobs/*/workspace
-jenkins/data/jenkins_home/jobs/*/log
+jenkins/data/jenkins_home/jobs/*/*log
 jenkins/data/jenkins_home/.*
 jenkins/data/jenkins_home/logs
 jenkins/data/jenkins_home/users
