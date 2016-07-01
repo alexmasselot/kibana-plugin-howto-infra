@@ -30,6 +30,12 @@ If `my_docker_ip?` is your current docker IP address (`docker-machine ip $DOCKER
  
 Allow for a couple minutes for the data to warm up, you ready to go.
 
+### What can you do at this time?
+
+No really much, apart from playing around with Kibana (hanging the search terms, for example).
+But the real fun starts when you go for modifying the pugins
+
+
 ## Developping
 
 The development per se is to be done in another directory, as it will imply cloning a freash kibana server and the various code plugin.
@@ -52,21 +58,41 @@ Developping plugins is easier when we have a local kibana server running on the 
 Plugin source code must be with the `installedPlugins` and not mounted via symlink, for auto refresh.
 The idea is to download kibana and launch it with a reference to the docker deployed elasticsearch.
 
-Head to https://www.elastic.co/downloads/kibana and download the latest 4.x kibana, untar it in your developement directory
 
-    cd kibana-4.5.1-darwin-x64  # or your ownn kibana directory
+
+	cd ~/tmp
+	git clone https://github.com/elastic/kibana
+	cd kibana
+	git checkout 4.5
 	
-	#fork or clone the plugin directory so they will be reloaded on the local kibana at every file save
+	#setup node 4.4 to be used
+	nvm use 4.4
+	
+	#*fork* or clone the plugin directory so they will be reloaded on the local kibana at every file save
 	cd installedPlugins/
 	git clone https://github.com/alexmasselot/kibana-howto-plugin-clock.git
 	git clone https://github.com/alexmasselot/kibana-howto-plugin-format-tweet-text.git
 	git clone https://github.com/alexmasselot/kibana-howto-plugin-viz-data-country.git
+	
+	#install npm dependencies for all plugins
+	for p in kibana-howto-plugin-*; do pushd $p; npm install; popd; done
 
-	#start the local kibana in development mode with nodejs 4.4
+
+	#start the local kibana in development mode (autorefresh the plugins when source changes)
 	cd ..
-	nvm use 4.4
-	bin/kibana --dev --elasticsearch=http://$(docker-machine ip default):9200
+	npm install
+	bin/kibana --dev --elasticsearch=http://$(docker-machine ip $DOCKER_MACHINE_NAME):9200
 
+And we have a kibana running on locahost.
+ 
+  * Head to http://localhost:5601
+  * select the `tweets` index (in the left column to be the default one - star)
+  * go to dashboard
+  * open the kibana-plugin-howto-dashboard
+  * you may have to go in the past (june 2016) to select the time frame with data
+  
+  
+# Doker nuts and bolts
 
 ##Setting initial data
 
