@@ -24,12 +24,11 @@ Demo data is populated into the elastic search and kibana is setup with visualiz
 
 If `my_docker_ip?` is your current docker IP address (`docker-machine ip $DOCKER_MACHINE_NAME`), you can head to:
 
- * http://my_docker_ip:5601 for a Kibana, or for a direct dashboard access:  [http://my_docker_ip_:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))
+ * http://my_docker_ip:5601 for a Kibana, or for a direct dashboard access:  http://my_docker_ip_:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))
  * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
  * http://my_docker_ip:9200 for ElasticSearch server
  
 Allow for a couple minutes for the data to warm up, you ready to go.
-
 
 ## Developping
 
