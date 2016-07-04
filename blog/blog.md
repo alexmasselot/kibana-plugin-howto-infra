@@ -57,4 +57,7 @@ Although there might have been incomplete, slightly out of date or simply at a t
 ## The Journey log book
 
 For the impatient, head to git (https://github.com/alexmasselot/kibana-plugin-howto-infra) and follow the instructions and have it running on your laptop.
+
+![architeture](images/archi.png)
+
  	
