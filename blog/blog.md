@@ -58,6 +58,62 @@ Although there might have been incomplete, slightly out of date or simply at a t
 
 For the impatient, head to git (https://github.com/alexmasselot/kibana-plugin-howto-infra) and follow the instructions and have it running on your laptop.
 
-![architeture](images/archi.png)
+
+### The architecture
+To fullfill our quest, we need at least:
+
+  * github to hold the plugins source code;
+  * a local development Kibana server, where plugins are refreshed upon saved;
+  * an ElasticSearch server, to store test data, and Kibana configurations;
+  * an integration Kibana, where packaged plugins are deploye canonically;
+  * Jenkins for continuous integration, to pull plugin source code from github, packaged those plugins and deploy them on the integration Kibana server.
+
+For the sake of isolating an integration environment, we propose in figure 2 to setup a Docker container set with Jenkins, ElasticSearch and the integration Kibana, while the development Kibana instance runs locally.
+This is of course only an example setup, we won't claim by far it is thebest, but we believe it is sufficient to make our point.
+
+![architecture](images/archi.png)
+
+### Docker infrastructure
+Docker is a powerful container platform to encapsulate lightweight containers.
+Perfectly suited for development, one can easily build upon pre-existing images (e.g. a *Kibana v4.5.1*), then custom them via `DockerFile` (e.g. tuning configuration).
+(`docker-compose`)[QQQ] push the system even further, as it allows to generate a full set of containers with a private network, while some ports and volume can be exposed to the outside world.
+In the age of micro services and multi tenant architectures, we believe that lightweight container systems have deeply altered the developper's life.
+The project presented here is a typical example of such architectures.
+
+#### Setup
+First install Docker locally, see Docker documentation for instructions (https://docs.docker.com/engine/installation/).
+
+To setup the continuous deployment environment for Kibana plugins development, clone the current repository:
+	git clone https://github.com/alexmasselot/kibana-plugin-howto-infra.git
+	cd kibana-plugin-howto-infra
+
+The configuration for Elasticsearch, Kibana, Jenkins  is specified in `docker-compose.yml`
+
+Now the Docker container can be started:
+
+    export DOCKER_MACHINE_NAME=kibanahowto
+	docker-machine create --driver=virtualbox --virtualbox-memory 4096 --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver $DOCKER_MACHINE_NAME
+	eval $(docker-machine env $DOCKER_MACHINE_NAME)
+	docker-compose build
+	docker-compose up
+
+#### What have you just done???
+
+You have deployed an Elasticsearch server, a Kibana and a Jenkins servers for continuous deployment.
+Demo data is populated in Elasticsearch and a visualization is available in Kibana through default dashboard.
+
+To access the servers in the container, you can find the IP address of the docker-machine with the following command:
+	docker-machine ip $DOCKER_MACHINE_NAME
+
+The different services are accessible here:
+
+ * http://my_docker_ip:5601 for a Kibana, or for a direct dashboard access:  http://my_docker_ip_:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))
+ * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
+ * http://my_docker_ip:9200 for ElasticSearch server
+
+Allow a couple minutes for the data to warm up.
+You have setup the environment for continuous deployment of Kibana plugins.
+
+####
 
  	
