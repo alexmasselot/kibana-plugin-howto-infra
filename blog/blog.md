@@ -125,7 +125,9 @@ Kibana is available with default dashboard, searches, visualizations and plugins
 We believe that only the seamless integrations process have a chance of being adopted by fellow developpers.
 Remember Larry Wall (Programming Perl, 2nd edition, 1996), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
 
-As described earlier, initial configurations are instanciated via `DockerFile`
+
+As mentionned earlier, the overall infrastructure is described in the `docker-compose.yml` file, while individual containers are instanciated via `docker-containers/*/DockerFile`.
+
 
 
 
