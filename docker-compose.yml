@@ -7,7 +7,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./docker-containers/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
   elasticsearch-initial-data:
     build: docker-containers/elasticsearch-initial-data/
     links:
@@ -15,7 +15,7 @@ services:
   kibana:
     build: docker-containers/kibana/
     volumes:
-      - ./kibana/config/:/opt/kibana/config/
+      - ./docker-containers/kibana/config/:/opt/kibana/config/
     ports:
       - "5601:5601"
     dns: 8.8.8.8
@@ -25,6 +25,6 @@ services:
     build: docker-containers/jenkins/
     dns: 8.8.8.8
     volumes:
-      - ./jenkins/data/jenkins_home:/var/jenkins_home
+      - ./docker-containers/jenkins/data/jenkins_home:/var/jenkins_home
     ports:
       - "8080:8080"
