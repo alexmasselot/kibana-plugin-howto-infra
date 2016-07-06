@@ -1,7 +1,7 @@
 version: '2'
 services:
   elasticsearch:
-    build: elasticsearch/
+    build: docker-containers/elasticsearch/
     command: elasticsearch -Des.network.host=0.0.0.0
     ports:
       - "9200:9200"
@@ -9,11 +9,11 @@ services:
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
   elasticsearch-initial-data:
-    build: elasticsearch-initial-data/
+    build: docker-containers/elasticsearch-initial-data/
     links:
       - kibana
   kibana:
-    build: kibana/
+    build: docker-containers/kibana/
     volumes:
       - ./kibana/config/:/opt/kibana/config/
     ports:
@@ -22,7 +22,7 @@ services:
     links:
       - elasticsearch
   jenkins:
-    build: jenkins/
+    build: docker-containers/jenkins/
     dns: 8.8.8.8
     volumes:
       - ./jenkins/data/jenkins_home:/var/jenkins_home
