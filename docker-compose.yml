@@ -8,12 +8,6 @@ services:
       - "9300:9300"
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-#  nginx:
-#    image: nginx:1.10
-#    volumes:
-#      - ./dev/kibana-plugin-test/build:/usr/share/nginx/html
-#    ports:
-#      - 80:80
   elasticsearch-initial-data:
     build: elasticsearch-initial-data/
     links:
@@ -27,17 +21,6 @@ services:
     dns: 8.8.8.8
     links:
       - elasticsearch
-#      - nginx
-#  kibana_dev:
-#    build: kibana/
-#    volumes:
-#      - ./kibana/config/:/opt/kibana/config/
-#      - ./plugins/kibana-howto-plugin-format-degree:/opt/kibana/installedPlugins/simple_format
-#      - ./plugins/kibana-howto-plugin-clock:/opt/kibana/installedPlugins/simple_clock
-#   ports:
-#     - "5611:5601"
-#   links:
-#      - elasticsearch
   jenkins:
     build: jenkins/
     dns: 8.8.8.8
