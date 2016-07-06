@@ -73,14 +73,16 @@ This is of course only an example setup, we won't claim by far it is thebest, bu
 
 ![architecture](images/archi.png)
 
+We will now walk through this architecture, see how to deploy it and how the initial data (a list of tweets) and configuration (Kibana and Jenkins) are seed.
+
 ### Docker infrastructure
 Docker is a powerful container platform to encapsulate lightweight containers.
 Perfectly suited for development, one can easily build upon pre-existing images (e.g. a *Kibana v4.5.1*), then custom them via `DockerFile` (e.g. tuning configuration).
-(`docker-compose`)[QQQ] push the system even further, as it allows to generate a full set of containers with a private network, while some ports and volume can be exposed to the outside world.
+(`docker-compose`)[QQQ] push the system even further, as it allows to generate a full set of containers with a private network, while some ports and volume are exposed to the outside world.
 In the age of micro services and multi tenant architectures, we believe that lightweight container systems have deeply altered the developper's life.
 The project presented here is a typical example of such architectures.
 
-#### Setup
+#### Spawning the infrastructure
 First install Docker locally, see Docker documentation for instructions (https://docs.docker.com/engine/installation/).
 
 To setup the continuous deployment environment for Kibana plugins development, clone the current repository:
@@ -114,6 +116,15 @@ The different services are accessible here:
 Allow a couple minutes for the data to warm up.
 You have setup the environment for continuous deployment of Kibana plugins.
 
-####
+####Populating initial data and configuration
+The containers boots already configured.
+Jenkins shows jobs ready to be ran.
+ElasticSearch contains 10'000 tweets with geographic coordinates.
+Kibana is available with default dashboard, searches, visualizations and plugins.
+
+We believe that only the seamless integrations process have a chance of being adopted by fellow developpers.
+Remember Larry Wall (Programming Perl, 2nd edition), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
+
+
 
  	
