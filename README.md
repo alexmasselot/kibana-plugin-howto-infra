@@ -7,9 +7,9 @@ Developing Kibana plugins (QQQ add context)
 ## Continuous deployment setup
 
 First install Docker locally, see Docker documentation for instructions (https://docs.docker.com/engine/installation/).
-Once docker is installed, a docker machine is ready under the name `default`.
 
 To setup the continuous deployment environment for Kibana plugins development, clone the current repository:
+
 	git clone https://github.com/alexmasselot/kibana-plugin-howto-infra.git
 	cd kibana-plugin-howto-infra
 
