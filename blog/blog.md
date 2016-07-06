@@ -123,7 +123,9 @@ ElasticSearch contains 10'000 tweets with geographic coordinates.
 Kibana is available with default dashboard, searches, visualizations and plugins.
 
 We believe that only the seamless integrations process have a chance of being adopted by fellow developpers.
-Remember Larry Wall (Programming Perl, 2nd edition), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
+Remember Larry Wall (Programming Perl, 2nd edition, 1996), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
+
+As described earlier, initial configurations are instanciated via `DockerFile`
 
 
 
