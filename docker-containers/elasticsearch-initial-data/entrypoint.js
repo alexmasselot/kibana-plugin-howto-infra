@@ -1,7 +1,6 @@
 var elasticsearch = require('elasticsearch');
 var readline = require('readline');
 var fs = require('fs');
-var elasticdump = require('elasticdump');
 var _ = require('lodash');
 var Promise = require('promise');
 

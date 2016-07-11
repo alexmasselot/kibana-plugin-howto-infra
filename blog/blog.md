@@ -1,55 +1,64 @@
 # A Journey in Writing & Deploying Kibana Plugins (riding Docker)
 
+
+---
+*The possibility of a custom plugin is a strong Kibana promise.
+We propose an end to end tutorial to write such plugins.
+But this "end to end" approach also means "how to continuously deploy them?", "how to share an environment with seeded test data?"
+Those questions will bring us in a full fledged integration infrastructure, backed by Docker.*
+
+---
+
 The ElasticSearch has grown from a Lucene evolution to a full fledged distributed dcoument store, with powerful storage, search and aggregation capabilities.
 Kibana definiteley brought a strong component for interative searching and visualization and brought athe data storage tier into an end user browser.
 
-Customizable dashboard via a rich library of graphical components made its success, but soon, the need for customization arose.
+Customizable dashboards via a rich library of graphical components made its success, but soon, the need for real customization arose.
 If plugins were thought to be integrated from early on, the actual customisation often lied into forking the master project and adapting to on particular purpose [REFREF daunting].
 Merging back fixes was soon to be a daunting effort to keep up with the high pace of the [github evolution](https://github.com/elastic/kibana/graphs/contributors).
 
 Fortunately, as of version 4.3, the Kibana project took a more structured way to integrate custom plugins.
-The promise of maintainable pluggable plugins was becoming true.
-Those pugins, writen in JavaScript, can be as simple as a standalone widget (e.g. a clock), a field formater (an up/down arrow instead of positive/negative number), a graphical representation of a search result (a chart) or a full blown application.
+The promise of maintainable external plugins was becoming true.
+Those plugins, writen in JavaScript, can be as simple as a standalone widget (e.g. a clock), a field formater (an up/down arrow instead of positive/negative number), a graphical representation of a search result (a chart) or a full blown application.
 
-So, that should be easy. Just google and you would make wonderful shiny visualizations.
+So, that should be easy. Just google and you would craft wonderful shiny visualizations.
 
 But not fast, young Kibana Padavan!
 Documentation lacks, resources are valuable but scarce.
 But the promise is still shiny and we want to reach it.
 
-In this post, we propose to share our journey into the writing of Kibana plugins, the liltle pitfalls we fell in and the setup of continuous deployment into a Docker environment.
-There is no dramatic discovery or stunning breakthrough here, but simply a list of pitfalls we had to overcome during our quest.
+In this post, we propose to share our journey into the writing of Kibana plugins, the little pitfalls we fell in and the setup of continuous deployment into a Docker environment.
+There is no dramatic discovery or stunning breakthrough today, but a tentative to write a map to make your journey easier.
 
 -----------------
 
-## The purpose of the quest
+## The purpose of the Quest
 The goals was to meet the Kibana 4.3+ promise, to be able to customize the platform without forking the orignal code branch.
 
 Our *Definition of Done* was:
 
- * we should develop different plugin types: independant widget, formatters, aggregation visualization. Hints: at this stage, they don't need to be pretty or particularly meaningful;
- * they should be resizable and offer the classic comfort of the classic Kibana experience; 
+ * we should develop different plugin types: independant widget, formatters, aggregation visualization. Hints: at this stage, they don't need to be pretty or even particularly meaningful;
+ * they should be resizable and offer the classic comfort of the Kibana experience; 
  * we should be able to build and deploy them via Jenkins or such;
- * we want to use Docker to run Jenkins, ElasticSearch, a deployed Kibana;
+ * we want to use Docker to run Jenkins, ElasticSearch, an integration Kibana;
  * with Docker, we want the infrastructure to start with preloaded data and visualization, to let user driven or automated test to happen;
  * we want the plugin development itself to be as smooth as possible (reload time when source code has changed);
- * we want other to be able to reproduce.
- * we want to be able to give a feedback on which extent the technology is mature for a full blown project.
+ * we want others to be able to reproduce the experience;
+ * finally, we want to be able to give a feedback on which extent the technology is mature for a full blown project.
  
 ![deployed plugins](images/dashboard-overall.png)
 
-*Figure 1:* the deployed dashboard with custom plugins, from upper left to lower right:
-a) a simple clock;
-b) the default date historgram to allow for time range narrowing;
-c) an aggregation visualization;
-d) a search results with a custom formatter.
+*Figure 1:* ElasticSearch is fed with 10'000 geolocalized tweets. We display a snapshop of the deployed dashboard with custom plugins. From upper left to lower right:
+a) a simple clock, untied to any data;
+b) the default Kibana date histogram to allow for time range narrowing;
+c) an aggregation visualization, where tweets are counted per country;
+d) a search results with a custom formatter, altering the color for #hashtags and @accounts.
  
 ### Wasn't there any full detailed map available?
-If there had been one, this whole effort would have been a straight tweet: *"amazing tutorial on how to build and deploy #kibana plugins #elasticsearch http://wonder.land/build/your/own/kibana/plugins."*
-Obviously, there was none.
+If only there had been one, this whole effort would have been a straight tweet: *"amazing tutorial on how to build and deploy #kibana plugins #elasticsearch http://wonder.land/build/your/own/kibana/plugins."*
+Obviously, there none was found.
  
 However, there were instructive and inspiring sources of information.
-Although there might have been incomplete, slightly out of date or simply at a too high level, we cannot thank their authors enough for having put us on track.
+Although there might have been incomplete, slightly out of date or simply at a too high level, we cannot thank enough their authors for having put us on track.
  
  * Enlightening talks from the ElastiCon conferences in San Francisco, [2015](https://www.elastic.co/elasticon/2015/sf/contributors-guide-to-the-kibana-galaxy) and [2016](https://www.elastic.co/elasticon/conf/2016/sf/how-to-build-your-own-kibana-plugins). Way more blasting presentations are available there!
  * The most comprehensive piece of documentation at the time and ubiquituously cited, [a four parts post by Tim Roe](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/). Although pretty descriptive, some information was missing, the commited code not fully working straightforwards (Kibana version?).
@@ -68,7 +77,7 @@ To fullfill our quest, we need at least:
   * an integration Kibana, where packaged plugins are deploye canonically;
   * Jenkins for continuous integration, to pull plugin source code from github, packaged those plugins and deploy them on the integration Kibana server.
 
-For the sake of isolating an integration environment, we propose in figure 2 to setup a Docker container set with Jenkins, ElasticSearch and the integration Kibana, while the development Kibana instance runs locally.
+For the sake of isolating an integration environment, we propose in figure 2  a Docker container set with Jenkins, ElasticSearch and the integration Kibana, while the development Kibana instance runs locally.
 This is of course only an example setup, we won't claim by far it is thebest, but we believe it is sufficient to make our point.
 
 ![architecture](images/archi.png)
@@ -76,6 +85,13 @@ This is of course only an example setup, we won't claim by far it is thebest, bu
 We will now walk through this architecture, see how to deploy it and how the initial data (a list of tweets) and configuration (Kibana and Jenkins) are seed.
 
 ### Docker infrastructure
+
+---
+In this part, we will review how to launch a set of containers with the aformenentioned services.
+If this part is rather classic, we will also see how we have populated each service with initial data, to offer the experience of an infrastructure *ready to go*.
+
+---
+
 Docker is a powerful container platform to encapsulate lightweight containers.
 Perfectly suited for development, one can easily build upon pre-existing images (e.g. a *Kibana v4.5.1*), then custom them via `DockerFile` (e.g. tuning configuration).
 (`docker-compose`)[QQQ] push the system even further, as it allows to generate a full set of containers with a private network, while some ports and volume are exposed to the outside world.
@@ -86,6 +102,7 @@ The project presented here is a typical example of such architectures.
 First install Docker locally, see Docker documentation for instructions (https://docs.docker.com/engine/installation/).
 
 To setup the continuous deployment environment for Kibana plugins development, clone the current repository:
+
 	git clone https://github.com/alexmasselot/kibana-plugin-howto-infra.git
 	cd kibana-plugin-howto-infra
 
@@ -93,10 +110,11 @@ The configuration for Elasticsearch, Kibana, Jenkins  is specified in `docker-co
 
 Now the Docker container can be started:
 
-    export DOCKER_MACHINE_NAME=kibanahowto
+   export DOCKER_MACHINE_NAME=kibanahowto
 	docker-machine create --driver=virtualbox --virtualbox-memory 4096 --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver $DOCKER_MACHINE_NAME
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
 	docker-compose build
+	echo "now start the machine and, when it's ready, open http://$(docker-machine ip $DOCKER_MACHINE_NAME):5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))"
 	docker-compose up
 
 #### What have you just done???
@@ -105,29 +123,68 @@ You have deployed an Elasticsearch server, a Kibana and a Jenkins servers for co
 Demo data is populated in Elasticsearch and a visualization is available in Kibana through default dashboard.
 
 To access the servers in the container, you can find the IP address of the docker-machine with the following command:
+
 	docker-machine ip $DOCKER_MACHINE_NAME
 
 The different services are accessible here:
 
- * http://my_docker_ip:5601 for a Kibana, or for a direct dashboard access:  http://my_docker_ip_:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))
- * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
  * http://my_docker_ip:9200 for ElasticSearch server
+ * http://my_docker_ip:5601 for a Kibana, or for a direct dashboard access:  http://my_docker_ip:5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'))
+ * http://my_docker_ip:8080 for Jenkins continuous integration & deployment
 
 Allow a couple minutes for the data to warm up.
 You have setup the environment for continuous deployment of Kibana plugins.
 
 ####Populating initial data and configuration
-The containers boots already configured.
-Jenkins shows jobs ready to be ran.
-ElasticSearch contains 10'000 tweets with geographic coordinates.
-Kibana is available with default dashboard, searches, visualizations and plugins.
+One of our goal is to boot containers with preloaded data and configurations.
+
+ * ElasticSearch contains 10'000 tweets with geographic coordinates.
+ * Kibana is available with default dashboard, searches, visualizations and plugins.
+ * Jenkins shows jobs ready to be ran.
 
 We believe that only the seamless integrations process have a chance of being adopted by fellow developpers.
 Remember Larry Wall (Programming Perl, 2nd edition, 1996), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
 
-
 As mentionned earlier, the overall infrastructure is described in the `docker-compose.yml` file, while individual containers are instanciated via `docker-containers/*/DockerFile`.
+All the information can be found on the [Docker compose](https://docs.docker.com/compose/) page.
 
+The only original part is on how we actually capture and populate the initial data
+
+##### ElasticSearch (the tweets)
+As mentionned before, we want to populated 10'000 geolocalized tweets, to demo our plugins.
+
+###### Creating the set
+A set is already available in the `containers/elasticsearch-initial-data/data/tweets.jsonl` file.
+To create such a set, a `tweet-download.js` NodeJS script is avialable. It will simply register to a tweet stream of geolocalized micromessages and append them in a file.
+Edit and source a `secret-env.sh` file with your API keys.
+Refer to the [API](https://www.npmjs.com/package/twitter) to know more
+
+###### Uploading the set in the ElasticSearch service
+The `containers/elasticsearch-initial-data/entrypoint.js` contains call to the ElasticSearch npm [API](https://www.npmjs.com/package/elasticsearch).
+
+The only pitfall to avoid was to wait for the ES server to be up, and only populate the tweets, at start time, only if they are not already in.
+The ES container can be started several times and we obviously want to push the data only once.
+
+##### Kibana
+The first step is to install an initial version of ech of the three plugins.
+As those are not yet available through our continuous integration component, we cheat and install them directly from github via the `containers/kibana/.entrypoint.sh`
+
+The second step is to set `tweets` as default the index, create the demo searches, visualisations and dashboard.
+This is done populating ElasticSearch indexes from *a priori* saved data, and is actually acchieved by the ES data instanciation step.
+
+But there still is an egg and chicken problem: we needed to create a dashboard, in order to save it, in order to redownload it.
+Sure.
+Initial configurations had to be build at once by hand, and scipt to save them are avaialable in `containers/elasticsearch-initial-data/dump/kibana-download.js`
+
+##### Jenkins
+Being file based up to version 2, Jenkins configuration consists in deploying a snapshot (another chicken and egge problem.)
+Deploying the configuration is achieved by mounting the `/var/jenkins_home` directory in Docker from the github directory `docker-containers/jenkins/data/jenkins_home`. To avoid the reposiroty pollution by transient data, we generously excluding all of them in  the `.gitignore`.
+
+## Writing custom plugins
+At last, we talk about plugins!
+Sorry for the impatient, but we had to set an infrastructure up first.
+
+We built three plugins around our tweets, strongly inspired (when not shamelessly cloning) by the four part [blog post](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/) by Tim Roes.
 
 
 
