@@ -21,3 +21,4 @@ docker-containers/jenkins/data/jenkins_home/*.bak
 docker-containers/jenkins/dump
 .DS_Store
 node_modules
+.idea
