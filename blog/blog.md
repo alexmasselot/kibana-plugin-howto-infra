@@ -140,7 +140,7 @@ One of our goal is to boot containers with preloaded data and configurations.
 
  * ElasticSearch contains 10'000 tweets with geographic coordinates.
  * Kibana is available with default dashboard, searches, visualizations and plugins.
- * Jenkins shows jobs ready to be ran.
+ * Jenkins shows jobs ready to be ran. For each plugin, source code is pulled from github repository, packaged and deployed to the Kibana server via ssh.
 
 We believe that only the seamless integrations process have a chance of being adopted by fellow developpers.
 Remember Larry Wall (Programming Perl, 2nd edition, 1996), laziness, together with impatience and hubris, is one of the three virtues of a good developer.
@@ -184,7 +184,64 @@ Deploying the configuration is achieved by mounting the `/var/jenkins_home` dire
 At last, we talk about plugins!
 Sorry for the impatient, but we had to set an infrastructure up first.
 
-We built three plugins around our tweets, strongly inspired (when not shamelessly cloning) by the four part [blog post](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/) by Tim Roes.
+We built three plugins above our tweet data, strongly inspired (when not shamelessly forked) by the four part [blog post](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/) by Tim Roes (see figure 1):
+
+ 1. a clock ([github](https://github.com/alexmasselot/kibana-howto-plugin-clock)), simply forked out from Tim's, except for the the packaging mechanism (in `package.json`) leveraged with the other plugins;
+ 2. a string field formatter ([github](https://github.com/alexmasselot/kibana-howto-plugin-format-tweet-text)), which turns #hastags and @accounts in different colors;
+ 3. a search result graphic visualization ([github](https://github.com/alexmasselot/kibana-howto-plugin-viz-data-country)), where the filtered tweets are count by country, and a flag display with a relative size. This view certainly is more evolved than the previous, using AngularJS and d3.js.
+
+### The development process
+ 
+The good part about customizable plugins is that one should be able to... customize them. Preferrably smoothly.
+ 
+One solution is to:
+ 
+ 1. modify the code;
+ 2. push modified code to github;
+ 3. launch a Jenkins job to pull/package/distribute it;
+ 4. head to the Docker Kibana server to see the changes.
+
+This easily take a couple of minutes, which is not smooth, by the XXIth century JavaScript standard.
+
+The other solutions is to work locally (on the developper laptop):
+
+ 1. install at once Kibana and launch it in development mode;
+ 2. fork or clone at once the plugin source code into the `installedPlugins/` directory;
+ 3. modify the code;
+ 4. refresh the local browser;
+ 5. only push the code to github when a meangful step has been achieved.
+
+The 3-4 feedback loop is way faster than the first method (even though refreshing the browser can take up to ten seconds.)
+
+### A few hints
+Tim Roes and others have explained in great details the nuts and bolts of writing plugins.
+However, some information were not readily available to by pass the `hello world` step.
+
+#### Resizable components
+It seems abovious that components rendering should often adapt to their size.
+This is even more true with Kibana customizable dashboard.
+
+The common underlying library to build visualizaiton components is the verstatile AngularJS.
+[Watcher](QQQ) mechanism allow to regularly watch the widget dimension and redraw when needed. QQQQ ref
+Even though this solution is often proposed, it only partially works.
+When moving around and resizing a full dashboard, the watcher function can be called too many times simultaneously, leading to exception generations.
+Beside bein a poor prgogramming pattern, the user experience can be impacted.
+
+An more elegant solution is to listen to some `resized` event, but little information was available.
+The solution can from diving into Kibana source code and locate the 'change:vis' event.
+
+Then, the implementation comes to (if `render`is the actual component rendering function):
+
+    rootScope.$on('change:vis', render);
+
+#### Packaging a plugin
+Packaging a plugin consisting in building the deployed `.zip` archive.
+Athough several methods are proposed, we converged towards the `@elastic/plugin-helpers` module,
+
+##So, shall we use customizable Kibana plugins?
+The short answer
+
+
 
 
 
