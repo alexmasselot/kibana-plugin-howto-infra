@@ -220,7 +220,7 @@ The 3-4 feedback loop is way faster than the first method (even though refreshin
 
 ### A few hints
 Tim Roes and others have explained in great details the nuts and bolts of writing plugins.
-However, some information were not readily available to by pass the `hello world` step.
+However, some information was not readily available to bypass the `hello world` step.
 
 #### Resizable components
 It seems abovious that components rendering should often adapt to their size.
@@ -238,13 +238,32 @@ The solution can from diving into Kibana source code and locate the 'change:vis'
 Then, the implementation comes to (if `render`is the actual component rendering function):
 
     rootScope.$on('change:vis', render);
+    
+#### You said "AngularJS"?
+
+Basing plugin code on AgularJS ceratinly is a maturity promise and one could be attracted by recycling prior knowledge on the framework.
+
+If it can be seen sometimes as an inconvenient, AngularJS is opinionated, splitting an application into functional modules, organized in controllers, factories, services and directives.
+Above this architecture, its success is certainly correlated to a versatile  ecosystem and the easiness, for example, to isolate components and write tests.
+
+Unfortunately, most of the popular examples we found do not take advantage of the proposed split of concerns and add too much functionalities (such as rendering) into the controller.
+
+However, nothing seems to intrisically make a proper AngularJS decoupling impossible.
+Our conclusions are only based on this experience, where we maybe abandon the battle too early.
 
 #### Packaging a plugin
 Packaging a plugin consisting in building the deployed `.zip` archive.
-Athough several methods are proposed, we converged towards the `@elastic/plugin-helpers` module,
+Athough several methods are proposed by various authors.
+
+We converged towards the `@elastic/plugin-helpers` module, allowing `npm run build`. Once the zip archive is packaged, it can either be made available on a url (Jenkins published artefacts) or copied to the kibana server.
+
+The plugin deployment itself is achieved by sshing onto the server and xecuting a `/opt/kibana/bin/kibana plugin --install ...`
+
+To have more specifics about those command, the easiest way is to head to Jenkins an open the configuration of one of the `kibana-plugin-*-deploy`jobs.
 
 ##So, shall we use customizable Kibana plugins?
-The short answer
+The short answer is: "yes, but beware."
+
 
 
 
