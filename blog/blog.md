@@ -177,8 +177,13 @@ Sure.
 Initial configurations had to be build at once by hand, and scipt to save them are avaialable in `containers/elasticsearch-initial-data/dump/kibana-download.js`
 
 ##### Jenkins
-Being file based up to version 2, Jenkins configuration consists in deploying a snapshot (another chicken and egge problem.)
-Deploying the configuration is achieved by mounting the `/var/jenkins_home` directory in Docker from the github directory `docker-containers/jenkins/data/jenkins_home`. To avoid the reposiroty pollution by transient data, we generously excluding all of them in  the `.gitignore`.
+Being file based until version 2, Jenkins configuration consists in deploying a snapshot. Another chicken and egg problem.
+
+Deploying the configuration is achieved by mounting the `/var/jenkins_home` directory in Docker from the github directory `docker-containers/jenkins/data/jenkins_home`.
+Then, the Jenkins itself can be configured, jobs added, plugins installed through the classic web interface as the change are persisted in `/var/jenkins_home`, thus in the git repository.
+
+The key point is to avoid polluting the repository with thousands of transient files (job runs, log, etc.)
+We can generously exclude all of them in  the `.gitignore`.
 
 ## Writing custom plugins
 At last, we talk about plugins!
