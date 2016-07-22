@@ -4,13 +4,13 @@
 ---
 *The possibility of a custom plugin is a strong Kibana promise.
 We propose an end to end tutorial to write such plugins.
-But this "end to end" approach also means "how to continuously deploy them?", "how to share an environment with seeded test data?"
+But this "end to end" approach also means "how to continuously deploy them?", "how to share an environment with seeded data?"
 Those questions will bring us in a full fledged integration infrastructure, backed by Docker.*
 
 ---
 
 The ElasticSearch has grown from a Lucene evolution to a full fledged distributed dcoument store, with powerful storage, search and aggregation capabilities.
-Kibana definiteley brought a strong component for interative searching and visualization and brought athe data storage tier into an end user browser.
+Kibana definiteley brought a strong component for interative searching and visualization and piped the data storage tier into an end user browser.
 
 Customizable dashboards via a rich library of graphical components made its success, but soon, the need for real customization arose.
 If plugins were thought to be integrated from early on, the actual customisation often lied into forking the master project and adapting to on particular purpose [REFREF daunting].
@@ -195,6 +195,9 @@ We built three plugins above our tweet data, strongly inspired (when not shamele
  2. a string field formatter ([github](https://github.com/alexmasselot/kibana-howto-plugin-format-tweet-text)), which turns #hastags and @accounts in different colors;
  3. a search result graphic visualization ([github](https://github.com/alexmasselot/kibana-howto-plugin-viz-data-country)), where the filtered tweets are count by country, and a flag display with a relative size. This view certainly is more evolved than the previous, using AngularJS and d3.js.
 
+As there is nothing particularly compared to othere resources available, we won't dive into details.
+We will only point out some implementation hints below that we found either lacing or unclear.
+
 ### The development process
  
 The good part about customizable plugins is that one should be able to... customize them. Preferrably smoothly.
@@ -246,10 +249,10 @@ Basing plugin code on AgularJS ceratinly is a maturity promise and one could be 
 If it can be seen sometimes as an inconvenient, AngularJS is opinionated, splitting an application into functional modules, organized in controllers, factories, services and directives.
 Above this architecture, its success is certainly correlated to a versatile  ecosystem and the easiness, for example, to isolate components and write tests.
 
-Unfortunately, most of the popular examples we found do not take advantage of the proposed split of concerns and add too much functionalities (such as rendering) into the controller.
+Unfortunately, most of the popular examples we found on Kibana plugins do not take advantage of the proposed split of concerns and add too much functionalities (such as rendering) into the controller.
 
 However, nothing seems to intrisically make a proper AngularJS decoupling impossible.
-Our conclusions are only based on this experience, where we maybe abandon the battle too early.
+Our conclusions are only based on this experience, where we may have left the battle too early.
 
 #### Packaging a plugin
 Packaging a plugin consisting in building the deployed `.zip` archive.
@@ -262,9 +265,24 @@ The plugin deployment itself is achieved by sshing onto the server and xecuting 
 To have more specifics about those command, the easiest way is to head to Jenkins an open the configuration of one of the `kibana-plugin-*-deploy`jobs.
 
 ##So, shall we use customizable Kibana plugins?
-The short answer is: "yes, but beware."
+Or *"shall we write an independant classic rich web application, backed to a REST API on top of ES?"
+The short answer is: "yes and no."
 
+The ElasticSearch+Kibana stack certainly deserves its success.
+And a huge part of it is due to the versatility of Kibana visulization, with basic and community plugins already availability.
 
+Pushing the dashboard further on seems natural.
+And then, turning the default exploration tools into an open production frontend seems an appealing and inexpensive solution, compared to writing a full rich web client from scratch.
+
+This choice can make sense up to a certain limit.
+Customization comes to often understimated costs:
+
+ * the major one is the Elastic velocity. It goes fast, and architectural changes (minor or major) are often not backwards compatible. Kibana 3 & ES 1.7 have been adopted at large and the pace of changes is hard to follow for developpers. And Elastic 5 coming down the corner will keep us rocking for sure.
+ * As a corollary to the previous point, if the stack is not mature, resources are scarce and answers often diverging.
+ * The plugin development itself, even as presented in this artice is not radically smooth. In development mode, the lead time for a minor change (*"just this css width"*) to reach the screen takes a few (easily up to ten) seconds and make the process cumbersome to today standards, when we are more use to have screen refreshed in less than a second.
+ * Tying up a whole project architecture to the Elastic perspective can make sense if we are ready to follow all their choice and willing to pay extraordinary prices for cusomtization (stepping sideways for authentification, for example)
+
+Those costs taken into account, it may often not seem totally unreasonnable to head to an independant frontend development, backed by classic stack such as AngularJS, or even better for the topic at end, ReactJS + flux.
 
 
 
