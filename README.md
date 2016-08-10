@@ -21,7 +21,7 @@ Now the Docker container can be started:
 	docker-machine create --driver=virtualbox --virtualbox-memory 4096 --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver $DOCKER_MACHINE_NAME
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
 	docker-compose build	
-	echo "when up is completed, please direct your browser to http://$(docker-machine ip $DOCKER_MACHINE_NAME):5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(refreshInterval:(display:Off,pause:!f,time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'),value:0),time:(from:now-15m,mode:quick,to:now))"
+	echo "when up is completed, please direct your browser to http://$(docker-machine ip $DOCKER_MACHINE_NAME):5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(refreshInterval:(display:Off,time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'),value:0),time:(from:now-15m,mode:quick,to:now))"
 	docker-compose up
 
 
