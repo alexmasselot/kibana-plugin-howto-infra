@@ -81,9 +81,20 @@ To fulfill our quest, we need at least:
 For the sake of isolating an integration environment, we propose in figure 2  a Docker container set with Jenkins, ElasticSearch and the integration Kibana, while the development Kibana instance runs locally.
 This is of course only an example setup, but we believe it is sufficient to back our point.
 
+
 ![architecture](images/archi.png)
 
 We will now walk through this architecture, see how to deploy it and how the initial data (a list of tweets) and configuration (Kibana and Jenkins) can be seeded.
+
+**Versions notes**
+As of writing, we used:
+
+ * kibana 4.4 & 4.5
+ * ElasticSearch 2.3
+ * Jenkins < 2
+ * NodeJS 4.4
+ * Docker 1.12 (both with VirtualBox 5.0.16 and Mac native)
+
 
 ### Docker infrastructure
 
@@ -157,7 +168,7 @@ As mentioned before, we want to populated 10'000 geolocalized tweets, to demo ou
 ###### Creating the set
 A set is already available in the `containers/elasticsearch-initial-data/data/tweets.jsonl` file.
 To create such a set, a [`tweet-download.js`](https://github.com/alexmasselot/kibana-plugin-howto-infra/blob/master/docker-containers/elasticsearch-initial-data/dump/tweets-dowload.js) NodeJS script is provided.
-It will simply register to a tweet stream of geolocalized micromessages and append them in a file.
+In this script, the Twitter client registers to a stream, filters messages with a location field, appends a `@timestamp` field and appends each of them as a JSON object in the `tweets.jsonl` file.
 Edit and source a `secret-env.sh` file with your API keys.
 Refer to the [Twitter API](https://www.npmjs.com/package/twitter) to discover more.
 
@@ -174,7 +185,9 @@ As those are not yet available through our continuous integration component, we 
 The second step is to set `tweets` as default the index, create the demo searches, visualisations and dashboard.
 This is done populating ElasticSearch indexes from *a priori* saved data, and is actually achieved by the ES data instantiation step.
 
-But there is again a chicken and egg problem: we needed to create a dashboard, in order to save it, in order to download it.
+The last step is to import mappings, searches, visualization and dashboards, in order to have Kibana already setup when opening it the first time.
+As for the tweet data, those features are conveniently stored in a `.kibana` index in ElasticSearch.
+But here is again a chicken and egg problem: we needed to create a dashboard, in order to save it, in order to download it.
 Initial configurations had to be built at once by hand. A script to save them is available: [`containers/elasticsearch-initial-data/dump/kibana-download.js`](https://github.com/alexmasselot/kibana-plugin-howto-infra/blob/master/docker-containers/elasticsearch-initial-data/dump/kibana-download.js).
 
 ##### Jenkins
