@@ -1,6 +1,6 @@
 # A Journey in Writing & Deploying Kibana Plugins (riding Docker)
 
-Alexandre Masselot (OCTO Technology Switzerland), Catherine Zwahlen  (OCTO Technology Switzerland) and Jonathan Gianfreda (Kudelski Security)
+Alexandre Masselot (OCTO Technology Switzerland), Catherine Zwahlen  (OCTO Technology Switzerland) and Jonathan Gianfreda.
 
 ---
 *The possibility of a custom plugin is a strong Kibana promise.
