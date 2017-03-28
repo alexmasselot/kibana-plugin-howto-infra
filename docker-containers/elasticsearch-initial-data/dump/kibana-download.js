@@ -4,7 +4,7 @@ var fs = require('fs');
 var elasticdump = require('elasticdump');
 var _ = require('lodash');
 
-var esHost = '192.168.99.100';
+var esHost = '192.168.99.102';
 var fileOut = 'data/kibana.jsonl';
 
 
@@ -38,7 +38,9 @@ var searchAppend = function (q) {
     ;
 
 fs.unlink(fileOut, function () {
-    searchAppend({q: '_id:kibana-howto-*'});
+    searchAppend({q: '_type:visualization'});
+    searchAppend({q: '_type:dashboard'});
+    searchAppend({q: '_type:search'});
     searchAppend({
         body: {
             query: {

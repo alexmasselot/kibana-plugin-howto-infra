@@ -112,7 +112,7 @@ var esSetDefault = function () {
 
 var pESReady = new Promise(function (fullfill, reject) {
     var i = 0;
-    var nMax = 20;
+    var nMax = 60;
     var interv = setInterval(function () {
         i += 1;
         if (i == nMax) {
