@@ -99,7 +99,7 @@ npm run build</command>
                   <noDefaultExcludes>false</noDefaultExcludes>
                   <makeEmptyDirs>false</makeEmptyDirs>
                   <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand>bash -c &apos;/opt/kibana/bin/kibana plugin --remove simple_data_viz &amp;&amp; /opt/kibana/bin/kibana plugin --install simple_data_viz -u file://$(ls -1rt /home/kibana/tmp/simple_data_viz*zip | tail -1)&apos;</execCommand>
+                  <execCommand>bash -c &apos;/opt/kibana/bin/kibana plugin --remove viz_data_country &amp;&amp; /opt/kibana/bin/kibana plugin --install viz_data_country -u file://$(ls -1rt /home/kibana/tmp/viz_data_country*zip | tail -1)&apos;</execCommand>
                   <execTimeout>120000</execTimeout>
                   <usePty>false</usePty>
                 </jenkins.plugins.publish__over__ssh.BapSshTransfer>

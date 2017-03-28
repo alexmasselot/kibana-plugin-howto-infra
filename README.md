@@ -19,6 +19,7 @@ Now the Docker container can be started:
 
     export DOCKER_MACHINE_NAME=kibanahowto
 	docker-machine create --driver=virtualbox --virtualbox-memory 4096 --virtualbox-cpu-count 2 --virtualbox-host-dns-resolver $DOCKER_MACHINE_NAME
+	docker-machine ssh $DOCKER_MACHINE_NAME sudo sysctl -w vm.max_map_count=262144
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
 	docker-compose build	
 	echo "when up is completed, please direct your browser to http://$(docker-machine ip $DOCKER_MACHINE_NAME):5601/app/kibana#/dashboard/kibana-howto-plugin?_g=(refreshInterval:(display:Off,time:(from:'2016-06-17T10:30:12.574Z',mode:quick,to:'2016-06-17T10:36:14.545Z'),value:0),time:(from:now-15m,mode:quick,to:now))"
@@ -62,10 +63,10 @@ Next install a Kibana server. That server will run in development mode to visual
 
 	git clone https://github.com/elastic/kibana
 	cd kibana
-	git checkout 4.5
+	git checkout 5.2
 
-	#setup node 4.4 to be used
-	nvm use 4.4
+	#setup node 6 to be used
+	nvm use 6
 
 *fork* or clone the plugin directory so plugins will be reloaded on the local Kibana server upon every file save action.
 	cd installedPlugins/

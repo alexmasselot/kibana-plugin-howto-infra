@@ -1,4 +1,4 @@
-# A Journey in Writing & Deploying Kibana Plugins (riding Docker)
+# Industrializing the Writing and Deployment of Kibana Plugins (riding Docker)
 
 Alexandre Masselot (OCTO Technology Switzerland), Catherine Zwahlen  (OCTO Technology Switzerland) and Jonathan Gianfreda.
 
@@ -177,6 +177,7 @@ The [`containers/elasticsearch-initial-data/entrypoint.js`](https://github.com/a
 
 The only pitfall to avoid was to wait for the ES server to be up, and only populate the tweets, at start time, only if they are not already in.
 As the ES container can be started several times, we obviously want to push the data only once.
+This check is achieved via a couple of `search` call to the API.
 
 ##### Kibana
 The first step is to install an initial version of each of the three plugins at building time.
@@ -187,7 +188,7 @@ This is done populating ElasticSearch indexes from *a priori* saved data, and is
 
 The last step is to import mappings, searches, visualization and dashboards, in order to have Kibana already setup when opening it the first time.
 As for the tweet data, those features are conveniently stored in a `.kibana` index in ElasticSearch.
-But here is again a chicken and egg problem: we needed to create a dashboard, in order to save it, in order to download it.
+But here is a chicken and egg problem: we needed to create a dashboard, in order to save it, in order to download it.
 Initial configurations had to be built at once by hand. A script to save them is available: [`containers/elasticsearch-initial-data/dump/kibana-download.js`](https://github.com/alexmasselot/kibana-plugin-howto-infra/blob/master/docker-containers/elasticsearch-initial-data/dump/kibana-download.js).
 
 ##### Jenkins
@@ -200,9 +201,27 @@ Then, the Jenkins itself was configured, jobs added, plugins installed through t
 The key point is to avoid polluting the Github repository with thousands of generated files (job runs, log, etc.)
 They were generously excluded via the [`.gitignore`](https://github.com/alexmasselot/kibana-plugin-howto-infra/blob/master/.gitignore) file.
 
+##### Why a chicken and egg pattern
+For both the dashboard and Jenkins, we follow the same pattern:
+ 1. set up the tool by hand (typically via its web interface);
+ 2. export the configuration in git;
+ 3. re-import the saved configuration when deploying new instances;
+ 4. to modify the setup, go to 1.
+
+This approach can be challenged.
+Why not using *ex nihilo* setup creation?
+One could read the Kibana or Jenkins configuration documentation and build up the desired instance.
+This approach is encouraged, specially for Jenkins, where a documented API exists.
+
+Moreover, opting for a programmatic creation will ease collaboration of multiple developers.
+Merging generated and cryptic JSON configuration files can prove to be a challenge in itself...
+
+However, the chicken and egg pattern offered us a gain in time and flexibility.
+
 ## Writing custom plugins
 At last, we talk about plugins!
 Sorry for the impatient, but we had to set the infrastructure up first.
+Get the toolbox ready and start building seemed pertinent.
 
 We built three plugins above our tweet data, strongly inspired (when not shamelessly forked) by the four parts [blog post](https://www.timroes.de/2015/12/02/writing-kibana-4-plugins-basics/) by Tim Roes (see figure 1):
 
@@ -241,10 +260,12 @@ The 3-4-5 feedback loop is way faster than the first method (even though refresh
 ### A few hints
 Tim Roes and others have explained in great details the nuts and bolts of writing plugins.
 However, some information was not readily available to go further than the `hello world` stage.
+We propose here a few hints to avoid common traps in the journey of writing production ready plugins.
 
 #### Resizable components
 It seems obvious that components rendering should often adapt to their size.
 This is even more true with Kibana customizable dashboard.
+Although this feature is ubiquitous, little has been written regarding Kibana plugins.
 
 The common underlying library to build visualization components is the versatile AngularJS.
 The [watcher](https://docs.angularjs.org/api/ng/type/$rootScope.Scope) mechanism allow to regularly watch the widget dimension and redraw when needed.
@@ -282,7 +303,7 @@ The plugin deployment itself is achieved by sshing onto the server and executing
 To have more specifics about those command, the easiest way is to head to Jenkins an open the configuration of one of the `kibana-plugin-*-deploy`jobs.
 
 ##So, shall we use customizable Kibana plugins?
-Or *"shall we write an independent classic rich web application, backed to a REST API on top of ES?"*
+Or *"shall we write an independent classic rich web application, backed by a REST API on top of ES?"*
 The short answer is: *"yes and no."*
 
 The ElasticSearch+Kibana stack certainly deserves its success.
@@ -299,7 +320,7 @@ Customization comes to often underestimated costs:
  * The plugin development itself, even as presented in this article is not radically smooth. In development mode, the lead time for a minor change (*"just modify this css width"*) to reach the screen takes a few (easily up to ten) seconds and makes the process cumbersome compared to today standards, where we are more used to have screens refreshed in less than a second.
  * Tying up a whole project architecture to the Elastic perspective can make sense if we are ready to follow all their choice and willing to pay extraordinary prices for customization (stepping sideways for authentification, for example)
 
-Those costs taken into account, it may often not seem totally unreasonable to head to an independent front end development, backed by classic stack such as AngularJS, or even better for the topic at end, ReactJS + flux application.
+Those costs taken into account, it may often not seem totally unreasonable to head to an independent front end development, backed by classic stack such as AngularJS, or even better for the topic at hand, ReactJS + flux application.
 
 
 

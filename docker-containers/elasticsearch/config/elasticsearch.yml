@@ -1,4 +1,4 @@
-network.host: 0.0.0.0
+#network.host: 0.0.0.0
 #shield:
 #  authc:
 #    realms:
@@ -6,8 +6,8 @@ network.host: 0.0.0.0
 #        type: esusers
 #        order: 0
 
-script.engine.groovy.inline.aggs: on
-script.engine.groovy.inline.search: on
-script.groovy.sandbox.enabled: true
-script.inline: on
-script.indexed: on
+#script.engine.groovy.inline.aggs: on
+#script.engine.groovy.inline.search: on
+#script.groovy.sandbox.enabled: true
+#script.inline: on
+#script.indexed: on

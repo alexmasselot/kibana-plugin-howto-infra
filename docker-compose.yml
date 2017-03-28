@@ -1,30 +1,41 @@
 version: '2'
+
 services:
+
   elasticsearch:
     build: docker-containers/elasticsearch/
-    command: elasticsearch -Des.network.host=0.0.0.0
     ports:
       - "9200:9200"
       - "9300:9300"
-    volumes:
-      - ./docker-containers/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-  elasticsearch-initial-data:
-    build: docker-containers/elasticsearch-initial-data/
-    links:
-      - kibana
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      # disable X-Pack
+      # see https://www.elastic.co/guide/en/x-pack/current/xpack-settings.html
+      #     https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html#xpack-enabling
+      xpack.security.enabled: "false"
+      xpack.monitoring.enabled: "false"
+      xpack.graph.enabled: "false"
+      xpack.watcher.enabled: "false"
+    networks:
+      - elk
+
   kibana:
     build: docker-containers/kibana/
     volumes:
-      - ./docker-containers/kibana/config/:/opt/kibana/config/
+      - ./docker-containers/kibana/config/:/usr/share/kibana/config
     ports:
       - "5601:5601"
-    dns: 8.8.8.8
-    links:
+    networks:
+      - elk
+    depends_on:
       - elasticsearch
-  jenkins:
-    build: docker-containers/jenkins/
-    dns: 8.8.8.8
-    volumes:
-      - ./docker-containers/jenkins/data/jenkins_home:/var/jenkins_home
-    ports:
-      - "8080:8080"
+
+  elasticsearch-initial-data:
+    build: docker-containers/elasticsearch-initial-data/
+    networks:
+        - elk
+    depends_on:
+      - kibana
+networks:
+  elk:
+    driver: bridge
