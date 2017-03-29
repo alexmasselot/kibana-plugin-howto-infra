@@ -36,6 +36,13 @@ services:
         - elk
     depends_on:
       - kibana
+#  jenkins:
+#    build: docker-containers/jenkins/
+#    dns: 8.8.8.8
+#    volumes:
+#      - ./docker-containers/jenkins/data/jenkins_home:/var/jenkins_home
+#    ports:
+#      - "8080:8080"
 networks:
   elk:
     driver: bridge
